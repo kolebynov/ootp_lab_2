@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\ICardDeck.cs" />
+    <Compile Include="Abstractions\ISolitaireGameModel.cs" />
     <Compile Include="Abstractions\IUniqueCardPile.cs" />
     <Compile Include="Abstractions\IOneSuitCardPile.cs" />
     <Compile Include="Abstractions\ISequentialOneSuitCardPile.cs" />
