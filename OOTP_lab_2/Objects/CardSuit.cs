@@ -5,6 +5,6 @@
         Heart,
         Spade,
         Diamond,
-        Baptize
+        Club
     }
 }

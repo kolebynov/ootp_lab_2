@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.2.0\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,19 +52,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\ICardDeck.cs" />
+    <Compile Include="Abstractions\ICardPileFactory.cs" />
+    <Compile Include="Abstractions\IGameController.cs" />
+    <Compile Include="Abstractions\IGameState.cs" />
+    <Compile Include="Abstractions\IGameView.cs" />
+    <Compile Include="Abstractions\IGameViewFactory.cs" />
+    <Compile Include="Abstractions\IObserversCollection.cs" />
+    <Compile Include="Abstractions\IReadOnlyOneSuitCardPile.cs" />
+    <Compile Include="Abstractions\IReadOnlySequentialOneSuitCardPile.cs" />
+    <Compile Include="Abstractions\IReadOnlyUniqueCardPile.cs" />
     <Compile Include="Abstractions\ISolitaireGameModel.cs" />
+    <Compile Include="Abstractions\IStringViewProvider.cs" />
     <Compile Include="Abstractions\IUniqueCardPile.cs" />
     <Compile Include="Abstractions\IOneSuitCardPile.cs" />
     <Compile Include="Abstractions\ISequentialOneSuitCardPile.cs" />
+    <Compile Include="Exceptions\CantDoStepException.cs" />
     <Compile Include="Exceptions\CardExistsInPileException.cs" />
     <Compile Include="Exceptions\IncompatibleCardNumberException.cs" />
     <Compile Include="Exceptions\IncompatibleCardSuitException.cs" />
+    <Compile Include="Exceptions\PileEmptyException.cs" />
     <Compile Include="Exceptions\PileFullException.cs" />
     <Compile Include="Implementations\CardDeck.cs" />
+    <Compile Include="Implementations\CardPileFactory.cs" />
+    <Compile Include="Implementations\StringViewProviders\CardNumberStringViewProvider.cs" />
+    <Compile Include="Implementations\StringViewProviders\CardStringViewProvider.cs" />
+    <Compile Include="Implementations\StringViewProviders\CardSuitStringViewProvider.cs" />
+    <Compile Include="Implementations\ConsoleGameView.cs" />
+    <Compile Include="Implementations\GameController.cs" />
+    <Compile Include="Implementations\GameViewFactory.cs" />
+    <Compile Include="Implementations\ObserversCollection.cs" />
     <Compile Include="Implementations\OneSuitCardPile.cs" />
     <Compile Include="Implementations\SequentialOneSuitCardPile.cs" />
+    <Compile Include="Implementations\SolitaireGameModel.cs" />
     <Compile Include="Implementations\UniqueCardPile.cs" />
     <Compile Include="Objects\Card.cs" />
+    <Compile Include="Objects\GameStarted.cs" />
+    <Compile Include="Objects\StepDone.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\CardNumber.cs" />
@@ -66,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

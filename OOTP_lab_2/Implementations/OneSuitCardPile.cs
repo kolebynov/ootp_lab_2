@@ -17,7 +17,9 @@ namespace OOTP_lab_2.Implementations
 
         public int Count => _wrappedCardPile.Count;
 
-        public bool IsReadOnly => false;
+        public Card Peek() => _wrappedCardPile.Peek();
+
+        public Card Pop() => _wrappedCardPile.Pop();
 
         public OneSuitCardPile(CardSuit suit, IUniqueCardPile wrappedCardPile)
         {
@@ -30,7 +32,7 @@ namespace OOTP_lab_2.Implementations
             Suit = suit;
         }
 
-        public void Add(Card item)
+        public void Push(Card item)
         {
             if (item == null)
             {
@@ -42,14 +44,10 @@ namespace OOTP_lab_2.Implementations
                 throw new IncompatibleCardSuitException(Suit, item.Suit);
             }
 
-            _wrappedCardPile.Add(item);
+            _wrappedCardPile.Push(item);
         }
 
         public void Clear() => _wrappedCardPile.Clear();
-
-        public bool Contains(Card item) => _wrappedCardPile.Contains(item);
-
-        public void CopyTo(Card[] array, int arrayIndex) => _wrappedCardPile.CopyTo(array, arrayIndex);
 
         public bool Remove(Card item) => _wrappedCardPile.Remove(item);
 

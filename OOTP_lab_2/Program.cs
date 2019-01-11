@@ -1,28 +1,38 @@
-﻿using OOTP_lab_2.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using OOTP_lab_2.Abstractions;
 using OOTP_lab_2.Implementations;
+using OOTP_lab_2.Implementations.StringViewProviders;
 using OOTP_lab_2.Objects;
 
 namespace OOTP_lab_2
 {
     class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            var sequence = new[]
-            {
-                CardNumber.Six, CardNumber.Seven, CardNumber.Eight, CardNumber.Nine, CardNumber.Ten, CardNumber.Jack,
-                CardNumber.Lady, CardNumber.King, CardNumber.Ace
-            };
+            var serviceCollection = new ServiceCollection();
+            InitServices(serviceCollection);
 
-            var pile = new SequentialOneSuitCardPile(sequence, new OneSuitCardPile(CardSuit.Heart, new UniqueCardPile(2)));
-            pile.Add(new Card(CardSuit.Heart, CardNumber.Six));
-            pile.Add(new Card(CardSuit.Heart, CardNumber.Seven));
-            pile.Add(new Card(CardSuit.Heart, CardNumber.Eight));
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var gameController = serviceProvider.GetRequiredService<IGameController>();
+            gameController.StartGame();
+        }
+
+        private static void InitServices(IServiceCollection services)
+        {
+            services.AddTransient<ICardDeck, CardDeck>();
+            services.AddTransient<IGameView, ConsoleGameView>();
+            services.AddTransient(typeof(IObserversCollection<>), typeof(ObserversCollection<>));
+            services.AddTransient<ISolitaireGameModel, SolitaireGameModel>();
+            services.AddTransient<IGameController, GameController>();
+
+            services.AddSingleton<ICardPileFactory, CardPileFactory>();
+            services.AddSingleton<IGameViewFactory, GameViewFactory>();
+            services.AddSingleton<IStringViewProvider<CardNumber>, CardNumberStringViewProvider>();
+            services.AddSingleton<IStringViewProvider<CardSuit>, CardSuitStringViewProvider>();
+            services.AddSingleton<IStringViewProvider<Card>, CardStringViewProvider>();
         }
     }
 }

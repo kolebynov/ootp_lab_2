@@ -1,9 +1,6 @@
-﻿using OOTP_lab_2.Objects;
-
-namespace OOTP_lab_2.Abstractions
+﻿namespace OOTP_lab_2.Abstractions
 {
-    public interface IOneSuitCardPile : IUniqueCardPile
+    public interface IOneSuitCardPile : IUniqueCardPile, IReadOnlyOneSuitCardPile
     {
-        CardSuit Suit { get; }
     }
 }

@@ -22,7 +22,7 @@ namespace OOTP_lab_2.Implementations
 
         static CardDeck()
         {
-            DefaultCards = new List<Card>(36);
+            DefaultCards = new List<Card>();
 
             foreach (CardNumber cardNumber in Enum.GetValues(typeof(CardNumber)))
             {

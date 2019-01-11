@@ -22,7 +22,9 @@ namespace OOTP_lab_2.Implementations
 
         public int Count => _wrappedCardPile.Count;
 
-        public bool IsReadOnly => false;
+        public Card Peek() => _wrappedCardPile.Peek();
+
+        public Card Pop() => _wrappedCardPile.Pop();
 
         public SequentialOneSuitCardPile(
             IEnumerable<CardNumber> cardNumbersSequence,
@@ -42,7 +44,7 @@ namespace OOTP_lab_2.Implementations
             _cardNumbersSequence = cardNumbersSequence.ToArray();
         }
 
-        public void Add(Card item)
+        public void Push(Card item)
         {
             if (item == null)
             {
@@ -62,14 +64,10 @@ namespace OOTP_lab_2.Implementations
                 throw new IncompatibleCardNumberException(_cardNumbersSequence[nextCardNumberIndex], item.Number);
             }
 
-            _wrappedCardPile.Add(item);
+            _wrappedCardPile.Push(item);
         }
 
         public void Clear() => _wrappedCardPile.Clear();
-
-        public bool Contains(Card item) => _wrappedCardPile.Contains(item);
-
-        public void CopyTo(Card[] array, int arrayIndex) => _wrappedCardPile.CopyTo(array, arrayIndex);
 
         public bool Remove(Card item) => _wrappedCardPile.Remove(item);
 

@@ -8,7 +8,7 @@
         Nine,
         Ten,
         Jack,
-        Lady,
+        Queen,
         King,
         Ace
     }

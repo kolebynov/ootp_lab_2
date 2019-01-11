@@ -1,12 +1,9 @@
-﻿using System;
-using OOTP_lab_2.Objects;
+﻿using OOTP_lab_2.Objects;
 
 namespace OOTP_lab_2.Abstractions
 {
-    public interface ISolitaireGameModel : IObservable<GameStarted>, IObservable<StepDone>
+    public interface IGameController
     {
-        IGameState GameState { get; }
-
         void StartGame();
 
         void MoveCardToResultPile(int fromPileIndex, CardSuit resultPile);

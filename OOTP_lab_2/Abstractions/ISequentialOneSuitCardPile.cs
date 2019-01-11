@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using OOTP_lab_2.Objects;
-
-namespace OOTP_lab_2.Abstractions
+﻿namespace OOTP_lab_2.Abstractions
 {
-    public interface ISequentialOneSuitCardPile : IOneSuitCardPile
+    public interface ISequentialOneSuitCardPile : IOneSuitCardPile, IReadOnlySequentialOneSuitCardPile
     {
-        IEnumerable<CardNumber> CardNumbersSequence { get; }
     }
 }

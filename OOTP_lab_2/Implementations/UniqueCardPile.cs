@@ -20,7 +20,28 @@ namespace OOTP_lab_2.Implementations
 
         public int Count => _cards.Count;
 
-        public bool IsReadOnly => false;
+        public Card Peek()
+        {
+            if (Count == 0)
+            {
+                throw new PileEmptyException();
+            }
+
+            return _cards[_cards.Count - 1];
+        }
+
+        public Card Pop()
+        {
+            if (Count == 0)
+            {
+                throw new PileEmptyException();
+            }
+
+            var card = _cards[_cards.Count - 1];
+            _cards.RemoveAt(_cards.Count - 1);
+
+            return card;
+        }
 
         public int MaxCardsInPile { get; }
 
@@ -28,7 +49,7 @@ namespace OOTP_lab_2.Implementations
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public virtual void Add(Card item)
+        public void Push(Card item)
         {
             if (item == null)
             {
@@ -50,10 +71,8 @@ namespace OOTP_lab_2.Implementations
 
         public void Clear() => _cards.Clear();
 
-        public bool Contains(Card item) => _cards.Contains(item);
-
-        public void CopyTo(Card[] array, int arrayIndex) => _cards.CopyTo(array, arrayIndex);
-
         public bool Remove(Card item) => _cards.Remove(item);
+
+        private bool Contains(Card item) => _cards.Contains(item);
     }
 }
