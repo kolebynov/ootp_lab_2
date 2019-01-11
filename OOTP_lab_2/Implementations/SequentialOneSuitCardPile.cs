@@ -16,6 +16,19 @@ namespace OOTP_lab_2.Implementations
 
         public IEnumerable<CardNumber> CardNumbersSequence => _cardNumbersSequence;
 
+        public CardNumber NextNumber
+        {
+            get
+            {
+                if (Count == MaxCardsInPile)
+                {
+                    throw new InvalidOperationException("Pile hasn't next number");
+                }
+
+                return _cardNumbersSequence[Count];
+            }
+        }
+
         public int MaxCardsInPile => Math.Min(_cardNumbersSequence.Length, _wrappedCardPile.MaxCardsInPile);
 
         public CardSuit Suit => _wrappedCardPile.Suit;

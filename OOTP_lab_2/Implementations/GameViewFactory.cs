@@ -20,6 +20,7 @@ namespace OOTP_lab_2.Implementations
         }
 
         public IGameView Create(IGameController gameController, ISolitaireGameModel gameModel) => 
-            new ConsoleGameView(gameController, gameModel, _serviceProvider.GetRequiredService<IStringViewProvider<Card>>());
+            new ConsoleGameView(gameController, gameModel, _serviceProvider.GetRequiredService<IStringViewProvider<Card>>(),
+                _serviceProvider.GetRequiredService<IStringViewProvider<CardSuit>>());
     }
 }

@@ -28,6 +28,8 @@ namespace OOTP_lab_2.Implementations
 
         private readonly IObserversCollection<StepDone> _stepDoneObservers;
 
+        private readonly IObserversCollection<GameEnded> _gameEndedObservers;
+
         private Dictionary<CardSuit, ISequentialOneSuitCardPile> _resultCardPiles;
 
         private IUniqueCardPile[] _gameCardPiles;
@@ -42,7 +44,8 @@ namespace OOTP_lab_2.Implementations
             ICardDeck cardDeck, 
             ICardPileFactory cardPileFactory, 
             IObserversCollection<GameStarted> gameStartedObservers, 
-            IObserversCollection<StepDone> stepDoneObservers)
+            IObserversCollection<StepDone> stepDoneObservers, 
+            IObserversCollection<GameEnded> gameEndedObservers)
         {
             if (cardDeck == null)
             {
@@ -64,10 +67,16 @@ namespace OOTP_lab_2.Implementations
                 throw new ArgumentNullException(nameof(stepDoneObservers));
             }
 
+            if (gameEndedObservers == null)
+            {
+                throw new ArgumentNullException(nameof(gameEndedObservers));
+            }
+
             _cardDeck = cardDeck;
             _cardPileFactory = cardPileFactory;
             _gameStartedObservers = gameStartedObservers;
             _stepDoneObservers = stepDoneObservers;
+            _gameEndedObservers = gameEndedObservers;
 
             GameState = new InternalGameState(this);
         }
@@ -94,6 +103,11 @@ namespace OOTP_lab_2.Implementations
 
         public void MoveCardToAnotherPile(int fromPileIndex, int toPileIndex) => DoStep(() =>
         {
+            if (fromPileIndex == toPileIndex)
+            {
+                throw new CantDoStepException("Нельзя перемещать карту в пределах одной стопки");
+            }
+
             var fromPile = _gameCardPiles[fromPileIndex];
             var toPile = _gameCardPiles[toPileIndex];
 
@@ -114,7 +128,7 @@ namespace OOTP_lab_2.Implementations
         {
             if (_stepsCount > 0 || _gameCardPiles.Any(cardPile => cardPile.Peek().Number == CardNumber.Six))
             {
-                throw new CantDoStepException("Доставать шестерку можно только в начале игры и, если сверху нет ни одной шестерки.");
+                throw new CantDoStepException("Доставать шестерку можно только в начале игры и, если снизу стопок нет ни одной шестерки.");
             }
 
             var sixCard = _gameCardPiles[fromPileIndex]
@@ -124,11 +138,17 @@ namespace OOTP_lab_2.Implementations
             _gameCardPiles[fromPileIndex].Remove(sixCard);
         });
 
-        public void EndGame() => _gameIsRunning = false;
+        public void EndGame() => EndGame(EndGameReason.Manual);
+
+        #region Subscribe
 
         public IDisposable Subscribe(IObserver<GameStarted> observer) => _gameStartedObservers.Add(observer);
 
         public IDisposable Subscribe(IObserver<StepDone> observer) => _stepDoneObservers.Add(observer);
+
+        public IDisposable Subscribe(IObserver<GameEnded> observer) => _gameEndedObservers.Add(observer);
+
+        #endregion
 
         private void InitCardPiles()
         {
@@ -148,7 +168,18 @@ namespace OOTP_lab_2.Implementations
                 step();
                 _stepsCount++;
 
-                _stepDoneObservers.OnNext(new StepDone());
+                if (IsWin())
+                {
+                    EndGame(EndGameReason.Win);
+                }
+                else if (IsDefeat())
+                {
+                    EndGame(EndGameReason.Defeat);
+                }
+                else
+                {
+                    _stepDoneObservers.OnNext(new StepDone());
+                }
             }
             catch (PileFullException e)
             {
@@ -177,6 +208,31 @@ namespace OOTP_lab_2.Implementations
             var moveCard = fromPile.Peek();
             toPile.Push(moveCard);
             fromPile.Remove(moveCard);
+        }
+
+        private bool IsWin() => _gameCardPiles.All(cardPile => cardPile.Count == 0);
+
+        private bool IsDefeat()
+        {
+            var notEmptyCardPiles = _gameCardPiles.Where(cardPile => cardPile.Count > 0).ToArray();
+            var notFullCardPiles = notEmptyCardPiles.Where(cardPile => cardPile.Count < cardPile.MaxCardsInPile).ToArray();
+            var resultPileNextCards = _resultCardPiles
+                .Where(pair => pair.Value.Count < pair.Value.MaxCardsInPile)
+                .Select(pair => new Card(pair.Key, pair.Value.NextNumber));
+
+            return _stepsCount > 0
+                   && notEmptyCardPiles.All(cardPile => !resultPileNextCards.Contains(cardPile.Peek()))
+                   && notEmptyCardPiles.All(notEmpty =>
+                       notFullCardPiles.Where(notFull => notFull != notEmpty).All(notFull => notEmpty.Peek().Number != notFull.Peek().Number));
+        }
+
+        private void EndGame(EndGameReason endGameReason)
+        {
+            _gameIsRunning = false;
+            _gameEndedObservers.OnNext(new GameEnded
+            {
+                EndGameReason = endGameReason
+            });
         }
 
         private class InternalGameState : IGameState

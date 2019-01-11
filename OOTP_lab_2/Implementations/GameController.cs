@@ -26,29 +26,14 @@ namespace OOTP_lab_2.Implementations
             _gameView = gameViewFactory.Create(this, gameModel);
         }
 
-        public void StartGame()
-        {
-            _gameModel.StartGame();
-        }
+        public void StartGame() => _gameModel.StartGame();
 
-        public void MoveCardToResultPile(int fromPileIndex, CardSuit resultPile)
-        {
-            _gameModel.MoveCardToResultPile(fromPileIndex, resultPile);
-        }
+        public void MoveCardToResultPile(int fromPileIndex, CardSuit resultPile) => _gameModel.MoveCardToResultPile(fromPileIndex, resultPile);
 
-        public void MoveCardToAnotherPile(int fromPileIndex, int toPileIndex)
-        {
-            
-        }
+        public void MoveCardToAnotherPile(int fromPileIndex, int toPileIndex) => _gameModel.MoveCardToAnotherPile(fromPileIndex, toPileIndex);
 
-        public void MoveSixToResultPile(int fromPileIndex, CardSuit resultPile)
-        {
-            throw new System.NotImplementedException();
-        }
+        public void MoveSixToResultPile(int fromPileIndex, CardSuit resultPile) => _gameModel.MoveSixToResultPile(fromPileIndex, resultPile);
 
-        public void EndGame()
-        {
-            throw new System.NotImplementedException();
-        }
+        public void EndGame() => _gameModel.EndGame();
     }
 }

@@ -9,16 +9,12 @@ namespace OOTP_lab_2.Implementations
 {
     public class CardDeck : ICardDeck
     {
-        private readonly List<Card> _cards;
-        private readonly Random _random;
+        private const int ShuffleIterations = 5;
+
+        private readonly List<Card> _cards = new List<Card>(DefaultCards);
+        private readonly Random _random = new Random(Environment.TickCount);
 
         private static readonly List<Card> DefaultCards;
-
-        public CardDeck()
-        {
-            _cards = new List<Card>(DefaultCards);
-            _random = new Random();
-        }
 
         static CardDeck()
         {
@@ -36,14 +32,24 @@ namespace OOTP_lab_2.Implementations
         public void Shuffle()
         {
             _cards.Clear();
-            List<Card> cardsForRand = new List<Card>(DefaultCards);
+            List<Card> cardsForRand1 = new List<Card>(DefaultCards);
+            List<Card> cardsForRand2 = new List<Card>();
 
-            while (cardsForRand.Any())
+            for (int i = 0; i < ShuffleIterations; ++i)
             {
-                int index = _random.Next(0, cardsForRand.Count);
-                _cards.Add(cardsForRand[index]);
-                cardsForRand.RemoveAt(index);
+                cardsForRand2.Clear();
+
+                while (cardsForRand1.Any())
+                {
+                    int index = _random.Next(0, cardsForRand1.Count);
+                    cardsForRand2.Add(cardsForRand1[index]);
+                    cardsForRand1.RemoveAt(index);
+                }
+
+                cardsForRand1.AddRange(cardsForRand2);
             }
+
+            _cards.AddRange(cardsForRand2);
         }
 
         public IEnumerator<Card> GetEnumerator() => _cards.GetEnumerator();

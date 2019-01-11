@@ -72,6 +72,7 @@
     <Compile Include="Exceptions\IncompatibleCardSuitException.cs" />
     <Compile Include="Exceptions\PileEmptyException.cs" />
     <Compile Include="Exceptions\PileFullException.cs" />
+    <Compile Include="Helpers\ConsoleHelper.cs" />
     <Compile Include="Implementations\CardDeck.cs" />
     <Compile Include="Implementations\CardPileFactory.cs" />
     <Compile Include="Implementations\StringViewProviders\CardNumberStringViewProvider.cs" />
@@ -86,7 +87,12 @@
     <Compile Include="Implementations\SolitaireGameModel.cs" />
     <Compile Include="Implementations\UniqueCardPile.cs" />
     <Compile Include="Objects\Card.cs" />
+    <Compile Include="Objects\ConsoleValueConverter.cs" />
+    <Compile Include="Objects\ConsoleValueValidator.cs" />
+    <Compile Include="Objects\EndGameReason.cs" />
+    <Compile Include="Objects\GameEnded.cs" />
     <Compile Include="Objects\GameStarted.cs" />
+    <Compile Include="Objects\RangeConsoleValueValidator.cs" />
     <Compile Include="Objects\StepDone.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

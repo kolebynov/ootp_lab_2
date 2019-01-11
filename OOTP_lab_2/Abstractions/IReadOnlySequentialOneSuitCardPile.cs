@@ -6,5 +6,7 @@ namespace OOTP_lab_2.Abstractions
     public interface IReadOnlySequentialOneSuitCardPile : IReadOnlyOneSuitCardPile
     {
         IEnumerable<CardNumber> CardNumbersSequence { get; }
+
+        CardNumber NextNumber { get; }
     }
 }
